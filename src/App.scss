@@ -1,0 +1,55 @@
+.App {
+  text-align: center;
+
+  margin-top: 100px;
+}
+
+.inputText {
+  width: 30%;
+  padding: 10px;
+  border: 1px solid rgba($color: #000000, $alpha: 0.3);
+}
+
+.btnAdd {
+  cursor: pointer;
+  width: 20%;
+  padding: 11px;
+  background-color: #42c9ff;
+  transition: all 0.2s;
+
+  border: none;
+
+  &:hover {
+    background-color: #35a3ce;
+    color: #fff;
+  }
+}
+
+.list {
+  max-width: 51.2%;
+  margin: 20px auto 0;
+
+  li {
+    background-color: rgba($color: #000000, $alpha: 0.1);
+    border-radius: 10px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 20px 40px;
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.deleted {
+  cursor: pointer;
+  font-size: 36px;
+  color: red;
+}
+
+input:checked + span {
+  text-decoration: line-through;
+}
