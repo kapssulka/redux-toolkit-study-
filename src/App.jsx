@@ -1,49 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.scss";
 import TodoList from "./components/TodoList";
 import InputField from "./components/InputField";
 
+import { useDispatch, useSelector } from "react-redux";
+import { addStateTodo, addTodo, fetchTodos } from "./store/todoSlice";
+
 function App() {
-  const [todos, setTodos] = useState([]);
   const [text, setText] = useState("");
+  const { status, error } = useSelector((state) => state.todos);
 
-  const addTodo = () => {
-    if (text.trim().length) {
-      setTodos([
-        ...todos,
-        { id: new Date().toISOString(), text, complited: false },
-      ]);
-
-      setText("");
-    }
+  // возвращает функцию
+  const dispatch = useDispatch();
+  // мы должны вписать ту функцию, которую нужно вытащить из reducer
+  const addTask = () => {
+    dispatch(addStateTodo(text));
+    setText("");
   };
 
-  const toggleTodoComplited = (todoId) => {
-    setTodos(
-      todos.map((todo) => {
-        if (todo.id !== todoId) return todo;
-
-        return {
-          ...todo,
-          complited: !todo.complited,
-        };
-      })
-    );
-  };
-
-  const removeTodo = (todoId) => {
-    setTodos(todos.filter((todo) => todo.id != todoId));
-  };
+  useEffect(() => {
+    dispatch(fetchTodos());
+  }, [dispatch]);
 
   return (
     <div className="App">
-      <InputField text={text} handleInput={setText} handleSubmit={addTodo} />
+      <InputField text={text} handleInput={setText} handleSubmit={addTask} />
+      {status === "loading" && (
+        <h2 style={{ marginTop: "30px", marginBottom: "30px" }}>Loading...</h2>
+      )}
 
-      <TodoList
-        todos={todos}
-        toggleTodoComplited={toggleTodoComplited}
-        removeTodo={removeTodo}
-      />
+      {error && <h2>{error}</h2>}
+      <TodoList />
     </div>
   );
 }
